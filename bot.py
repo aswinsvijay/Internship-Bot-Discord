@@ -30,5 +30,6 @@ async def on_message(message):
         message.content = ' '.join(message.content)
         message.content = prefix+message.content
         await bot.process_commands(message)
+        return
 
 bot.run(BOT_TOKEN)
