@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from sqlfunctions import *
 
 class CommandsCog(commands.Cog):
     def __init__(self,bot):
@@ -13,10 +14,11 @@ class CommandsCog(commands.Cog):
         Usage: @InternshipBot set_channel #channel-name
         """
         if len(ctx.message.channel_mentions)==1:
+            sql_set_channel(ctx.guild,ctx.channel,ctx.message.channel_mentions)
             await ctx.send('Internships list - ' + ctx.message.channel_mentions[0].mention)
         else:
             await ctx.send('''Please mention 1 channel\n@InternshipBot set_channel #channel-name''')
-    
+
     @set_channel.error
     async def set_channel_error(self,ctx,error):
         if isinstance(error,commands.MissingRole):

@@ -22,6 +22,7 @@ except mysql.connector.errors.DatabaseError:
         user = MYSQL_USER,
         password = MYSQL_PASSWORD
     )
+    cursor = botdata.cursor()
     cursor.execute(f'CREATE DATABASE {MYSQL_DATABASE}')
     cursor.execute(f'USE {MYSQL_DATABASE}')
     cursor.execute(
@@ -34,7 +35,13 @@ except mysql.connector.errors.DatabaseError:
     )
 
 def sql_set_channel(guild,channel,channel_mentions):
-    pass
+    cursor.execute(
+        f'INSERT INTO server_channel '
+        f'values ({guild.id},{channel_mentions[0].id}) '
+        f'ON DUPLICATE KEY UPDATE '
+        f'ChannelID={channel_mentions[0].id} '
+    )
+    botdata.commit()
 
 def sql_get_channel(guild):
     pass
