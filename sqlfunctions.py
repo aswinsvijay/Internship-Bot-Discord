@@ -34,12 +34,12 @@ except mysql.connector.errors.DatabaseError:
         """
     )
 
-def sql_set_channel(guild,channel,channel_mentions):
+def sql_set_channel(guild,channel,channel_mention):
     cursor.execute(
         f'INSERT INTO server_channel '
-        f'values ({guild.id},{channel_mentions[0].id}) '
+        f'values ({guild},{channel_mention}) '
         f'ON DUPLICATE KEY UPDATE '
-        f'ChannelID={channel_mentions[0].id} '
+        f'ChannelID={channel_mention} '
     )
     botdata.commit()
 
