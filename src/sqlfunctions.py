@@ -27,16 +27,16 @@ except mysql.connector.errors.DatabaseError:
     cursor.execute(f'USE {MYSQL_DATABASE}')
     cursor.execute(
         """
-        CREATE TABLE server_channel(
-        ServerID BIGINT,
+        CREATE TABLE guild_channel(
+        GuildID BIGINT,
         ChannelID BIGINT NOT NULL,
-        PRIMARY KEY (ServerID))
+        PRIMARY KEY (GuildID))
         """
     )
 
 def sql_set_channel(guild,channel,channel_mention):
     cursor.execute(
-        f'INSERT INTO server_channel '
+        f'INSERT INTO guild_channel '
         f'values ({guild},{channel_mention}) '
         f'ON DUPLICATE KEY UPDATE '
         f'ChannelID={channel_mention} '
