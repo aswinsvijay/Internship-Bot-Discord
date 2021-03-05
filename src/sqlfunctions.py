@@ -44,4 +44,8 @@ def sql_set_channel(guild,channel,channel_mention):
     botdata.commit()
 
 def sql_get_channel(guild):
-    pass
+    cursor.execute(
+        f'SELECT ChannelID from guild_channel '
+        f'WHERE GuildID={guild}'
+    )
+    return list(cursor)[0][0]
