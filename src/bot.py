@@ -19,6 +19,8 @@ if __name__=='__main__':
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} is ready.')
+    global owner
+    owner = (await bot.application_info()).owner
 
 @bot.event
 async def on_message(message):
@@ -33,7 +35,7 @@ async def on_message(message):
         await bot.process_commands(message)
         return
 
-    if message.author.name == 'Zapier':
+    if message.author.name == 'Zapier' or message.author == owner:
         if message.channel.id == sql_get_channel(message.guild.id):
             await message.channel.send('New Internship')
 
