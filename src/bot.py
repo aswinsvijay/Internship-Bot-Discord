@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+from sqlfunctions import *
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -31,5 +32,9 @@ async def on_message(message):
         message.content = prefix+message.content
         await bot.process_commands(message)
         return
+
+    if message.author.name == 'Zapier':
+        if message.channel.id == sql_get_channel(message.guild.id):
+            await message.channel.send('New Internship')
 
 bot.run(BOT_TOKEN)
