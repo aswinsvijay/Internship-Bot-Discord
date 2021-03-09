@@ -8,7 +8,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 BOT_USER_ID = os.getenv('BOT_USER_ID')
 
-prefixes = (f'<@!{BOT_USER_ID}> ' , f'<@{BOT_USER_ID}> ')
+prefixes = (f'<@!{BOT_USER_ID}>' , f'<@{BOT_USER_ID}>')
 prefix = prefixes[0]
 bot = commands.Bot(prefix)
 extensions = ['commands_cog']
@@ -28,8 +28,9 @@ async def on_message(message):
         return
 
     if message.content.startswith(prefixes):
-        message.content = message.content[len(prefixes[0]):] if message.content.startswith(prefixes[0]) else message.content[len(prefixes[1]):]
-        message.content = message.content.split()
+        message.content = message.content.replace(prefixes[1],prefixes[0]+' ')
+        message.content = message.content.replace(prefixes[0],prefixes[1]+' ')
+        message.content = message.content.split()[1:]
         message.content = ' '.join(message.content)
         message.content = prefix+message.content
         await bot.process_commands(message)
