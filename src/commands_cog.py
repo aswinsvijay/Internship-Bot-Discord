@@ -7,7 +7,7 @@ class CommandsCog(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.has_role('Bot mod')
+    @commands.has_role('InternshipMod')
     async def set_channel(self,ctx):
         """
         To set the channel where Zapier sends available internships
@@ -22,7 +22,7 @@ class CommandsCog(commands.Cog):
     @set_channel.error
     async def set_channel_error(self,ctx,error):
         if isinstance(error,commands.MissingRole):
-            await ctx.send('\"Bot mod\" role required for command.')
+            await ctx.send('\"InternshipMod\" role required for command.')
 
 def setup(bot):
     bot.add_cog(CommandsCog(bot))
