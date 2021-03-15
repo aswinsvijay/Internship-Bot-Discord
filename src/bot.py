@@ -28,8 +28,8 @@ async def on_message(message):
         return
 
     if message.content.startswith(prefixes):
-        message.content = message.content.replace(prefixes[1],prefixes[0]+' ')
-        message.content = message.content.replace(prefixes[0],prefixes[1]+' ')
+        message.content = message.content.replace(prefixes[0],prefixes[0]+' ')
+        message.content = message.content.replace(prefixes[1],prefixes[1]+' ')
         message.content = message.content.split()[1:]
         message.content = ' '.join(message.content)
         message.content = prefix+message.content
