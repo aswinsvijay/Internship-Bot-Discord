@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 from sqlfunctions import *
+from googlefunctions import *
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -38,6 +39,7 @@ async def on_message(message):
 
     if message.author.name == 'Zapier' or message.author == owner:
         if message.channel.id == sql_get_channel(message.guild.id):
-            await message.channel.send('New Internship')
+            form = await google_create_form(message.content.split('\n')[0])
+            await message.channel.send(f'{form[0]}\n{form[1]}')
 
 bot.run(BOT_TOKEN)
