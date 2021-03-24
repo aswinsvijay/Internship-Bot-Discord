@@ -11,7 +11,12 @@ BOT_USER_ID = os.getenv('BOT_USER_ID')
 
 allowed_prefixes = (f'<@!{BOT_USER_ID}>' , f'<@{BOT_USER_ID}>')
 prefix = allowed_prefixes[0]+' '
-bot = commands.Bot(prefix)
+bot = commands.Bot(
+    prefix,
+    help_command = commands.DefaultHelpCommand(
+        no_category = 'Others'
+    )
+)
 
 extensions = ['commands_cog']
 if __name__=='__main__':

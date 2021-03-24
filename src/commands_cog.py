@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from sqlfunctions import *
 
-class CommandsCog(commands.Cog):
+class CommandsCog(commands.Cog, name='InternshipMod'):
     def __init__(self,bot):
         self.bot = bot
 
