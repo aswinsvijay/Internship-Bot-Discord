@@ -25,7 +25,7 @@ async def on_ready():
     owner = (await bot.application_info()).owner
 
 @bot.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
@@ -40,6 +40,7 @@ async def on_message(message):
     if message.author.name == 'Zapier' or message.author == owner:
         if message.channel.id == sql_get_channel(message.guild.id):
             form = await google_create_form(message.content.split('\n')[0])
-            await message.channel.send(f'{form[0]}\n{form[1]}')
+            if len(form)==2:
+                await message.add_reaction('✅')
 
 bot.run(BOT_TOKEN)
