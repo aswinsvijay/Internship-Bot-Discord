@@ -36,18 +36,22 @@ except mysql.connector.errors.DatabaseError:
 
 def sql_set_channel(guild,channel,channel_mention):
     cursor.execute(
-        'INSERT INTO guild_channel '
-        'values (%s,%s) '
-        'ON DUPLICATE KEY UPDATE '
-        'ChannelID=%s ',
+        """
+        INSERT INTO guild_channel
+        values (%s,%s)
+        ON DUPLICATE KEY UPDATE
+        ChannelID=%s
+        """,
         (guild, channel_mention, channel_mention)
     )
     botdata.commit()
 
 def sql_get_channel(guild):
     cursor.execute(
-        'SELECT ChannelID from guild_channel '
-        'WHERE GuildID=%s',
+        """
+        SELECT ChannelID from guild_channel
+        WHERE GuildID=%s
+        """,
         (guild,)
     )
     return list(cursor)[0][0]
