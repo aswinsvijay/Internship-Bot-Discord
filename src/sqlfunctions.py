@@ -33,6 +33,19 @@ except mysql.connector.errors.DatabaseError:
         PRIMARY KEY (GuildID))
         """
     )
+    cursor.execute(
+        """
+        CREATE TABLE internships(
+        MessageID BIGINT PRIMARY KEY,
+        GuildID BIGINT,
+        Title VARCHAR(255),
+        Email VARCHAR(255),
+        LastDate DATE,
+        ApplyURL VARCHAR(255),
+        EditURL VARCHAR(255),
+        FOREIGN KEY (GuildID) REFERENCES guild_channel(GuildID))
+        """
+    )
 
 def sql_set_channel(guild,channel,channel_mention):
     cursor.execute(
