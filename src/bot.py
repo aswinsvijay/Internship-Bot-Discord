@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from sqlfunctions import *
 from googlefunctions import *
+import datetime
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -44,8 +45,18 @@ async def on_message(message: discord.Message):
 
     if message.author.name == 'Zapier' or message.author == owner:
         if message.channel.id == sql_get_channel(message.guild.id):
-            form = await google_create_form(message.content.split('\n')[0])
+            message.content = message.content.split('\n')
+            title = message.content[0]
+            email = message.content[1]
+            date = message.content[2]
+            date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
+            form = await google_create_form(title)
             if len(form)==2:
+                sql_add_internship(
+                    message.id, message.guild.id, 
+                    title, email, date, 
+                    form[0], form[1]
+                )
                 await message.add_reaction('✅')
 
 bot.run(BOT_TOKEN)

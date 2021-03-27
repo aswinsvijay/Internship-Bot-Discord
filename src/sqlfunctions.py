@@ -68,3 +68,13 @@ def sql_get_channel(guild):
         (guild,)
     )
     return list(cursor)[0][0]
+
+def sql_add_internship(message, guild, title, email, date, applyURL, editURL):
+    cursor.execute(
+        """
+        INSERT INTO internships
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """,
+        (message, guild, title, email, date, applyURL, editURL)
+    )
+    botdata.commit()
