@@ -53,9 +53,9 @@ def sql_set_channel(guild,channel,channel_mention):
         INSERT INTO guild_channel
         values (%s,%s)
         ON DUPLICATE KEY UPDATE
-        ChannelID=%s
+        ChannelID=VALUES(ChannelID)
         """,
-        (guild, channel_mention, channel_mention)
+        (guild, channel_mention)
     )
     botdata.commit()
 
