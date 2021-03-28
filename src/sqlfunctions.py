@@ -86,3 +86,15 @@ def sql_add_internship(message, guild, title, email, date, applyURL, editURL):
         (message, guild, title, email, date, applyURL, editURL)
     )
     botdata.commit()
+
+def sql_add_student(student, guild):
+    cursor.execute(
+        """
+        INSERT INTO student_guild
+        VALUES (%s,%s)
+        ON DUPLICATE KEY UPDATE
+        GuildID=VALUES(GuildID)
+        """,
+        (student, guild)
+    )
+    botdata.commit()
