@@ -13,7 +13,8 @@ load_dotenv()
 GOOGLE_APP_SCRIPT = os.getenv('GOOGLE_APP_SCRIPT')
 
 SCOPES = [
-    'https://www.googleapis.com/auth/forms'
+    'https://www.googleapis.com/auth/forms',
+    'https://www.googleapis.com/auth/script.send_mail'
 ]
 
 creds = None
@@ -30,7 +31,7 @@ else:
         pickle.dump(creds,token)
 service = build('script', 'v1', credentials=creds)
 
-async def google_create_form(title):
+async def google_create_form(title, email):
     global creds
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -46,7 +47,7 @@ async def google_create_form(title):
     
     request = {
         'function': 'createForm',
-        'parameters': [title]
+        'parameters': [title, email]
     }
     loop = asyncio.get_event_loop()
     http = _auth.authorized_http(creds)
