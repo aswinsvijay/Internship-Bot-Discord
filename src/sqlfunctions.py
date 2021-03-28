@@ -55,7 +55,7 @@ except mysql.connector.errors.DatabaseError:
         """
     )
 
-def set_internship_channel(guild,channel,channel_mention):
+def set_internship_channel(guild, channel_mention):
     cursor.execute(
         """
         INSERT INTO guild_channel
