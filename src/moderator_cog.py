@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from sqlfunctions import *
 
-class CommandsCog(commands.Cog, name='InternshipMod'):
+class ModeratorCog(commands.Cog, name='InternshipMod'):
     def __init__(self,bot):
         self.bot = bot
 
@@ -25,4 +25,4 @@ class CommandsCog(commands.Cog, name='InternshipMod'):
             await ctx.send('\"InternshipMod\" role required for command.')
 
 def setup(bot):
-    bot.add_cog(CommandsCog(bot))
+    bot.add_cog(ModeratorCog(bot))

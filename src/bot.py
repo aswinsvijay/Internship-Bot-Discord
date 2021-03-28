@@ -19,7 +19,7 @@ bot = commands.Bot(
     )
 )
 
-extensions = ['commands_cog']
+extensions = ['moderator_cog']
 if __name__=='__main__':
     for extension in extensions:
         bot.load_extension(extension)
