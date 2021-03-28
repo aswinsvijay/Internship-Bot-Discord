@@ -46,12 +46,20 @@ except mysql.connector.errors.DatabaseError:
         FOREIGN KEY (GuildID) REFERENCES guild_channel(GuildID))
         """
     )
+    cursor.execute(
+        """
+        CREATE TABLE student_guild(
+        StudentID BIGINT PRIMARY KEY,
+        GuildID BIGINT,
+        FOREIGN KEY(GuildID) REFERENCES guild_channel(GuildID))
+        """
+    )
 
 def sql_set_channel(guild,channel,channel_mention):
     cursor.execute(
         """
         INSERT INTO guild_channel
-        values (%s,%s)
+        VALUES (%s,%s)
         ON DUPLICATE KEY UPDATE
         ChannelID=VALUES(ChannelID)
         """,
