@@ -44,7 +44,7 @@ async def on_message(message: discord.Message):
         return
 
     if message.author.name == 'Zapier' or message.author == owner:
-        if message.channel.id == sql_get_channel(message.guild.id):
+        if message.channel.id == get_internship_channel(message.guild.id):
             message.content = message.content.split('\n')
             title = message.content[0]
             email = message.content[1]
@@ -52,7 +52,7 @@ async def on_message(message: discord.Message):
             date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
             form = await google_create_form(title, email)
             if len(form)==2:
-                sql_add_internship(
+                add_internship(
                     message.id, message.guild.id, 
                     title, email, date, 
                     form[0], form[1]

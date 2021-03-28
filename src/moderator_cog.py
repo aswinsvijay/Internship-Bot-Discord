@@ -14,7 +14,7 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
         Usage: @InternshipBot set_channel #channel-name
         """
         if len(ctx.message.channel_mentions)==1:
-            sql_set_channel(ctx.guild.id,ctx.channel.id,ctx.message.channel_mentions[0].id)
+            set_internship_channel(ctx.guild.id,ctx.channel.id,ctx.message.channel_mentions[0].id)
             await ctx.send('Internships list - ' + ctx.message.channel_mentions[0].mention)
         else:
             await ctx.send('''Please mention 1 channel\n@InternshipBot set_channel #channel-name''')

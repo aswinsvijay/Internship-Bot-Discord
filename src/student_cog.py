@@ -11,7 +11,7 @@ class StudentCog(commands.Cog, name='Students'):
         """
         To enrol yourself to this guild
         """
-        sql_add_student(ctx.author.id, ctx.guild.id)
+        set_student_guild(ctx.author.id, ctx.guild.id)
 
 def setup(bot):
     bot.add_cog(StudentCog(bot))

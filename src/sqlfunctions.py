@@ -55,7 +55,7 @@ except mysql.connector.errors.DatabaseError:
         """
     )
 
-def sql_set_channel(guild,channel,channel_mention):
+def set_internship_channel(guild,channel,channel_mention):
     cursor.execute(
         """
         INSERT INTO guild_channel
@@ -67,7 +67,7 @@ def sql_set_channel(guild,channel,channel_mention):
     )
     botdata.commit()
 
-def sql_get_channel(guild):
+def get_internship_channel(guild):
     cursor.execute(
         """
         SELECT ChannelID from guild_channel
@@ -77,7 +77,7 @@ def sql_get_channel(guild):
     )
     return list(cursor)[0][0]
 
-def sql_add_internship(message, guild, title, email, date, applyURL, editURL):
+def add_internship(message, guild, title, email, date, applyURL, editURL):
     cursor.execute(
         """
         INSERT INTO internships
@@ -87,7 +87,7 @@ def sql_add_internship(message, guild, title, email, date, applyURL, editURL):
     )
     botdata.commit()
 
-def sql_add_student(student, guild):
+def set_student_guild(student, guild):
     cursor.execute(
         """
         INSERT INTO student_guild
