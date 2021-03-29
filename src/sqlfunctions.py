@@ -98,3 +98,14 @@ def set_student_guild(student, guild):
         (student, guild)
     )
     botdata.commit()
+
+def get_internships(student):
+    cursor.execute(
+        """
+        SELECT Title, ApplyURL
+        FROM student_guild NATURAL JOIN internships
+        WHERE StudentID=%s
+        """,
+        (student,)
+    )
+    return cursor
