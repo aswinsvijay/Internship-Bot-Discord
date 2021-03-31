@@ -18,20 +18,25 @@ SCOPES = [
 ]
 
 creds = None
+# Getting credentials from file if available
 if os.path.exists('token.pickle'):
-    with open('token.pickle','rb') as token:
+    with open('token.pickle', 'rb') as token:
         creds = pickle.load(token)
+# If credentials file not available, login from browser
 else:
     flow = InstalledAppFlow.from_client_secrets_file(
         'credentials.json',
         SCOPES
     )
     creds = flow.run_local_server(port=0)
-    with open('token.pickle','wb') as token:
-        pickle.dump(creds,token)
+    with open('token.pickle', 'wb') as token:
+        pickle.dump(creds, token)
 service = build('script', 'v1', credentials=creds)
 
 async def google_create_form(title, email):
+    """
+    To create google form by running the Google Apps Script
+    """
     global creds
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -42,8 +47,8 @@ async def google_create_form(title, email):
                 SCOPES
             )
             creds = flow.run_local_server(port=0)
-        with open('token.pickle','wb') as token:
-            pickle.dump(creds,token)
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
     
     request = {
         'function': 'createForm',
@@ -58,5 +63,5 @@ async def google_create_form(title, email):
         ).execute,
         http=http
     )
-    response = await loop.run_in_executor(ThreadPoolExecutor(),partialfunction)
+    response = await loop.run_in_executor(ThreadPoolExecutor(), partialfunction)
     return response['response']['result']

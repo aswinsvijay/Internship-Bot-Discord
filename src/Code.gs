@@ -7,7 +7,7 @@ function createForm(formTitle, emailID)
       .setTitle('ID');
   form.addEditor(emailID)
   sendMail(emailID, form.getEditUrl())
-  return [form.getPublishedUrl(),form.getEditUrl()]
+  return [form.getPublishedUrl(), form.getEditUrl()]
 }
 
 function sendMail(emailID, formURL)
