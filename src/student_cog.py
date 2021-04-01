@@ -11,16 +11,16 @@ class StudentCog(commands.Cog, name='Students'):
         """
         To enrol yourself to this guild
         """
-        set_student_guild(ctx.author.id, ctx.guild.id)
+        await set_student_guild(ctx.author.id, ctx.guild.id)
 
     @commands.command()
     async def apply(self, ctx):
         """
         To get internships from enrolled guild in DM
         """
-        internships = get_internships(ctx.author.id)
+        internships = await get_internships(ctx.author.id)
         embed = discord.Embed(title='Available internships')
-        for i in internships:
+        async for i in internships:
             embed.add_field(name=i[0], value=i[1], inline=False)
         await ctx.author.send(embed=embed)
 
