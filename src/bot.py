@@ -10,13 +10,10 @@ load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')          # Bot access token
 BOT_USER_ID = os.getenv('BOT_USER_ID')      # Bot user ID
 
-# Prefixes that can be used for commands
-allowed_prefixes = (f'<@!{BOT_USER_ID}>', f'<@{BOT_USER_ID}>')
-
 # Setting up the bot
-prefix = allowed_prefixes[0]+' '
 bot = commands.Bot(
-    prefix,
+    commands.when_mentioned,
+    strip_after_prefix = True,
     help_command = commands.DefaultHelpCommand(
         no_category = 'Others'
     )
@@ -40,14 +37,8 @@ async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
-    # Parse message and process command if message starts with an allowed prefix
-    if message.content.startswith(allowed_prefixes):
-        for allowed_prefix in allowed_prefixes:
-            message.content = message.content.replace(allowed_prefix, prefix+' ')
-
-        message.content = message.content.split()
-        message.content = ' '.join(message.content)
-
+    # If message starts with bot's command prefix, process commands and return
+    if message.content.startswith(tuple(bot.command_prefix(bot, message))):
         await bot.process_commands(message)
         return
 
