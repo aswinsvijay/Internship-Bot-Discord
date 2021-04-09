@@ -27,10 +27,10 @@ if __name__=='__main__':
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} is ready.')
     await database_connect()
     global owner
     owner = (await bot.application_info()).owner
+    await owner.send(f'{bot.user.name} is ready.')
 
 @bot.event
 async def on_message(message: discord.Message):
