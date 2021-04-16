@@ -8,7 +8,6 @@ import datetime
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')          # Bot access token
-BOT_USER_ID = os.getenv('BOT_USER_ID')      # Bot user ID
 
 # Setting up the bot
 bot = commands.Bot(
