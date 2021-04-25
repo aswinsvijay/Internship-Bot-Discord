@@ -26,11 +26,13 @@ class StudentCog(commands.Cog, name='Students'):
         await ctx.author.send(embed=embed, delete_after=15*60)
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        if user != self.bot.user:
-            message = reaction.message
-            if reaction.emoji == '🔁' and message.author == user:
-                await self.bot.process_commands(message)
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id != self.bot.user.id:
+            channel = self.bot.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+            if str(payload.emoji) == '🔁' and message.author.id == payload.user_id:
+                ctx = await self.bot.get_context(message)
+                await ctx.reinvoke()
 
 def setup(bot):
     bot.add_cog(StudentCog(bot))
