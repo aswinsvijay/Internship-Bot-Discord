@@ -19,7 +19,7 @@ bot = commands.Bot(
 )
 
 # Cogs for the bot
-extensions = ['moderator_cog', 'student_cog']
+extensions = ['cogs.moderator_cog', 'cogs.student_cog']
 if __name__=='__main__':
     for extension in extensions:
         bot.load_extension(extension)
