@@ -21,8 +21,9 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
     await database_connect()
-    global owner
+
     owner = (await bot.application_info()).owner
+    bot.owner_id = owner.id
     await owner.send(f'{bot.user.name} is ready.')
 
 @bot.event
@@ -36,7 +37,7 @@ async def on_message(message: discord.Message):
         return
 
     # If message sender is Zapier or bot owner(for testing), consider it as internship
-    if message.author.name == 'Zapier' or message.author == owner:
+    if message.author.name == 'Zapier' or message.author.id == bot.owner_id:
         if message.channel.id == await get_internship_channel(message.guild.id):
             message.content = message.content.split('\n')
             title = message.content[0]
