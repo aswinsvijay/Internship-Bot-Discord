@@ -18,12 +18,6 @@ bot = commands.Bot(
     )
 )
 
-# Cogs for the bot
-extensions = ['cogs.moderator_cog', 'cogs.student_cog']
-if __name__=='__main__':
-    for extension in extensions:
-        bot.load_extension(extension)
-
 @bot.event
 async def on_ready():
     await database_connect()
@@ -58,5 +52,10 @@ async def on_message(message: discord.Message):
                     form[0], form[1]
                 )
                 await message.add_reaction('✅')
+
+# Cogs for the bot
+extensions = ['cogs.moderator_cog', 'cogs.student_cog']
+for extension in extensions:
+    bot.load_extension(extension)
 
 bot.run(BOT_TOKEN)
