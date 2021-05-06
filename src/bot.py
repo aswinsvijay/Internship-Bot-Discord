@@ -69,7 +69,7 @@ async def on_message(message: discord.Message):
             date = message.content[2]
             date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
 
-            form = await google_create_form(title, email)
+            form = await create_form(title, email)
             if len(form)==2:
                 await add_internship(
                     message.id, message.guild.id,

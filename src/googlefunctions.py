@@ -33,7 +33,7 @@ else:
         pickle.dump(creds, token)
 service = build('script', 'v1', credentials=creds)
 
-async def google_create_form(title, email):
+async def create_form(title, email):
     """
     To create google form by running the Google Apps Script
     """
