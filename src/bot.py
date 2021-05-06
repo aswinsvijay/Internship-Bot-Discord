@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import os
 from dotenv import load_dotenv
 from sqlfunctions import *
@@ -18,9 +18,33 @@ bot = commands.Bot(
     )
 )
 
+@tasks.loop(minutes=15)
+async def delete_internships_loop():
+    global lastdate
+    today = datetime.datetime.now().date()
+
+    if today != lastdate:
+        internships = await delete_internships(today)
+        internships_dict = dict()
+        for i in internships:
+            internships_dict.setdefault(i[0], []).append(i[1])
+
+        for channel_id in internships_dict.keys():
+            channel = bot.get_channel(channel_id)
+            for message_id in internships_dict[channel_id]:
+                message = await channel.fetch_message(message_id)
+                await message.delete()
+        lastdate = today
+
 @bot.event
 async def on_ready():
     await database_connect()
+
+    # lastdate is the last day when internships were purged from channels
+    # lastdate is set as the day before, to ensure internships are purged when bot comes online
+    global lastdate
+    lastdate = datetime.datetime.now().date() - datetime.timedelta(days=1)
+    delete_internships_loop.start()
 
     owner = (await bot.application_info()).owner
     bot.owner_id = owner.id

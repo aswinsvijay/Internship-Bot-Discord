@@ -142,3 +142,27 @@ async def get_internships(student):
             (student,)
         )
         return cursor
+
+async def delete_internships(date):
+    """
+    Delete internships after last date to apply
+    """
+    async with botdata.cursor() as cursor:
+        await cursor.execute(
+            """
+            SELECT ChannelID, MessageID
+            FROM internships NATURAL JOIN guild_channel
+            WHERE LastDate<%s
+            """,
+            (date,)
+        )
+        deletable = await cursor.fetchall()
+        await cursor.execute(
+            """
+            DELETE FROM internships
+            WHERE LastDate<%s
+            """,
+            (date,)
+        )
+        await botdata.commit()
+        return deletable
