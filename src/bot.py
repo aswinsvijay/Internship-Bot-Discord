@@ -25,6 +25,8 @@ async def delete_internships_loop():
 
     if today != lastdate:
         internships = await delete_internships(today)
+        forms_list = [i[2] for i in internships]
+        await close_forms(forms_list)
         internships_dict = dict()
         for i in internships:
             internships_dict.setdefault(i[0], []).append(i[1])

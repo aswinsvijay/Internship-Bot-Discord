@@ -18,3 +18,11 @@ function sendMail(emailID, formURL)
     "The google form URL is given below:\n"+formURL
   )
 }
+
+function closeForms(formsList)
+{
+  formsList.forEach(formURL => {
+    var form = FormApp.openByUrl(formURL)
+    form.setAcceptingResponses(enabled=false)
+  })
+}

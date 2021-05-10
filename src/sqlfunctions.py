@@ -150,7 +150,7 @@ async def delete_internships(date):
     async with botdata.cursor() as cursor:
         await cursor.execute(
             """
-            SELECT ChannelID, MessageID
+            SELECT ChannelID, MessageID, EditURL
             FROM internships NATURAL JOIN guild_channel
             WHERE LastDate<%s
             """,

@@ -59,3 +59,29 @@ async def create_form(title, email):
     )
     response = await loop.run_in_executor(ThreadPoolExecutor(), partialfunction)
     return response['response']['result']
+
+async def close_forms(forms_list):
+    """
+    To lock google forms after deadline
+    """
+    global creds
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    request = {
+        'function': 'closeForms',
+        'parameters': [forms_list]
+    }
+    loop = asyncio.get_event_loop()
+    http = _auth.authorized_http(creds)
+    partialfunction = partial(
+        service.scripts().run(
+            body=request,
+            scriptId=f'{GOOGLE_APP_SCRIPT}'
+        ).execute,
+        http=http
+    )
+    response = await loop.run_in_executor(ThreadPoolExecutor(), partialfunction)
