@@ -11,16 +11,12 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
 
     @commands.command()
     @commands.has_role('InternshipMod')
-    async def set_channel(self, ctx):
+    async def set_channel(self, ctx, channel: discord.TextChannel):
         """
         To set the channel where Zapier sends available internships
-        Usage: @InternshipBot set_channel #channel-name
         """
-        if len(ctx.message.channel_mentions)==1:
-            await set_internship_channel(ctx.guild.id, ctx.message.channel_mentions[0].id)
-            await ctx.send('Internships list - ' + ctx.message.channel_mentions[0].mention)
-        else:
-            await ctx.send('''Please mention 1 channel\n@InternshipBot set_channel #channel-name''')
+        await set_internship_channel(ctx.guild.id, channel.id)
+        await ctx.send('Internships list - ' + channel.mention)
 
     @set_channel.error
     async def set_channel_error(self, ctx, error):
@@ -29,6 +25,8 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
         """
         if isinstance(error, commands.MissingRole):
             await ctx.send('\"InternshipMod\" role required for command.')
+        else:
+            await ctx.send_help(ctx.command)
 
 def setup(bot):
     bot.add_cog(ModeratorCog(bot))
