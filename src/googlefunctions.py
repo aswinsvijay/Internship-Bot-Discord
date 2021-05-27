@@ -1,9 +1,9 @@
 import pickle
 import os
-from googleapiclient import _auth, errors
+from googleapiclient import _auth
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request, AuthorizedSession
+from google.auth.transport.requests import Request
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
