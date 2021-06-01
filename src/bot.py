@@ -80,8 +80,8 @@ async def on_message(message: discord.Message):
                 await message.add_reaction('✅')
 
 # Cogs for the bot
-extensions = ['cogs.moderator_cog', 'cogs.student_cog']
-for extension in extensions:
-    bot.load_extension(extension)
+for file in os.listdir('./cogs'):
+    if file.endswith('.py'):
+        bot.load_extension(f'cogs.{file[:-3]}')
 
 bot.run(BOT_TOKEN)
