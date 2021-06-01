@@ -2,8 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import os
 from dotenv import load_dotenv
-from sqlfunctions import *
-from googlefunctions import *
+from utils import sql, google
 import datetime
 
 load_dotenv()
@@ -24,9 +23,9 @@ async def delete_internships_loop():
     today = datetime.datetime.now().date()
 
     if today != lastdate:
-        internships = await delete_internships(today)
+        internships = await sql.delete_internships(today)
         forms_list = [i[2] for i in internships]
-        await close_forms(forms_list)
+        await google.close_forms(forms_list)
         internships_dict = dict()
         for i in internships:
             internships_dict.setdefault(i[0], []).append(i[1])
@@ -40,7 +39,7 @@ async def delete_internships_loop():
 
 @bot.event
 async def on_ready():
-    await database_connect()
+    await sql.database_connect()
 
     # lastdate is the last day when internships were purged from channels
     # lastdate is set as the day before, to ensure internships are purged when bot comes online
@@ -64,16 +63,16 @@ async def on_message(message: discord.Message):
 
     # If message sender is Zapier or bot owner(for testing), consider it as internship
     if message.author.name == 'Zapier' or message.author.id == bot.owner_id:
-        if message.channel.id == await get_internship_channel(message.guild.id):
+        if message.channel.id == await sql.get_internship_channel(message.guild.id):
             message.content = message.content.split('\n')
             title = message.content[0]
             email = message.content[1]
             date = message.content[2]
             date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
 
-            form = await create_form(title, email)
+            form = await google.create_form(title, email)
             if len(form)==2:
-                await add_internship(
+                await sql.add_internship(
                     message.id, message.guild.id,
                     title, email, date,
                     form[0], form[1]

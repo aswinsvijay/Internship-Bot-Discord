@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from sqlfunctions import *
+from utils import sql
 
 class StudentCog(commands.Cog, name='Students'):
     def __init__(self, bot):
@@ -11,7 +11,7 @@ class StudentCog(commands.Cog, name='Students'):
         """
         To enrol yourself to this guild
         """
-        await set_student_guild(ctx.author.id, ctx.guild.id)
+        await sql.set_student_guild(ctx.author.id, ctx.guild.id)
 
     @commands.command()
     async def apply(self, ctx):
@@ -19,7 +19,7 @@ class StudentCog(commands.Cog, name='Students'):
         To get internships from enrolled guild in DM
         """
         await ctx.message.add_reaction('🔁')
-        internships = await get_internships(ctx.author.id)
+        internships = await sql.get_internships(ctx.author.id)
         embed = discord.Embed(title='Available internships')
         async for i in internships:
             embed.add_field(name=i[0], value=i[1], inline=False)

@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from sqlfunctions import *
+from utils import sql
 
 class ModeratorCog(commands.Cog, name='InternshipMod'):
     """
@@ -15,7 +15,7 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
         """
         To set the channel where Zapier sends available internships
         """
-        await set_internship_channel(ctx.guild.id, channel.id)
+        await sql.set_internship_channel(ctx.guild.id, channel.id)
         await ctx.send('Internships list - ' + channel.mention)
 
     @set_channel.error
