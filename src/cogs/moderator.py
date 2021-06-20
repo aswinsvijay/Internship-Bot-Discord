@@ -3,7 +3,7 @@ from discord.ext import commands
 from utils import sql
 from bot import internship
 
-class ModeratorCog(commands.Cog, name='InternshipMod'):
+class Moderator(commands.Cog, name='InternshipMod'):
     """
     Contains commands that can be used by users with 'InternshipMod' role in the guild
     """
@@ -40,4 +40,4 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
             await ctx.send("Use command as reply to the message to force add")
 
 def setup(bot):
-    bot.add_cog(ModeratorCog(bot))
+    bot.add_cog(Moderator(bot))

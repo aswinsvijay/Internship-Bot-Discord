@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from utils import sql
 
-class StudentCog(commands.Cog, name='Students'):
+class Student(commands.Cog, name='Students'):
     def __init__(self, bot):
         self.bot = bot
 
@@ -35,4 +35,4 @@ class StudentCog(commands.Cog, name='Students'):
                 await ctx.reinvoke()
 
 def setup(bot):
-    bot.add_cog(StudentCog(bot))
+    bot.add_cog(Student(bot))
