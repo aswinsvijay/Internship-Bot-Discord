@@ -62,26 +62,30 @@ async def on_message(message: discord.Message):
         return
 
     # If message sender is Zapier or bot owner(for testing), consider it as internship
-    if message.author.name == 'Zapier' or message.author.id == bot.owner_id:
+    if message.author.name == 'Zapier':
         if message.channel.id == await sql.get_internship_channel(message.guild.id):
-            message.content = message.content.split('\n')
-            title = message.content[0]
-            email = message.content[1]
-            date = message.content[2]
-            date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
+            await internship(message)
 
-            form = await google.create_form(title, email)
-            if len(form)==2:
-                await sql.add_internship(
-                    message.id, message.guild.id,
-                    title, email, date,
-                    form[0], form[1]
-                )
-                await message.add_reaction('✅')
+async def internship(message):
+    message.content = message.content.split('\n')
+    title = message.content[0]
+    email = message.content[1]
+    date = message.content[2]
+    date = datetime.datetime.strptime(date, '%m/%d/%Y').date()
 
-# Cogs for the bot
-for file in os.listdir('./cogs'):
-    if file.endswith('.py'):
-        bot.load_extension(f'cogs.{file[:-3]}')
+    form = await google.create_form(title, email)
+    if len(form)==2:
+        await sql.add_internship(
+            message.id, message.guild.id,
+            title, email, date,
+            form[0], form[1]
+        )
+        await message.add_reaction('✅')
 
-bot.run(BOT_TOKEN)
+if __name__ == '__main__':
+    # Cogs for the bot
+    for file in os.listdir('./cogs'):
+        if file.endswith('.py'):
+            bot.load_extension(f'cogs.{file[:-3]}')
+
+    bot.run(BOT_TOKEN)

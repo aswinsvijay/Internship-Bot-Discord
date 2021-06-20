@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from utils import sql
+from bot import internship
 
 class ModeratorCog(commands.Cog, name='InternshipMod'):
     """
@@ -27,6 +28,16 @@ class ModeratorCog(commands.Cog, name='InternshipMod'):
             await ctx.send('\"InternshipMod\" role required for command.')
         else:
             await ctx.send_help(ctx.command)
+
+    @commands.command()
+    @commands.has_role('InternshipMod')
+    async def force_add(self, ctx):
+        reference = ctx.message.reference
+        if reference:
+            message = reference.cached_message or (await ctx.channel.fetch_message(reference.message_id))
+            await internship(message)
+        else:
+            await ctx.send("Use command as reply to the message to force add")
 
 def setup(bot):
     bot.add_cog(ModeratorCog(bot))
