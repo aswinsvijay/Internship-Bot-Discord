@@ -11,16 +11,17 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')          # Bot access token
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.loop.create_task(self.startup())
+
+        # lastdate is the last day when internships were purged from channels
+        # lastdate is set as the day before, to ensure internships are purged when bot comes online
+        self.lastdate = datetime.datetime.now().date() - datetime.timedelta(days=1)
+
+        self.loop.create_task(self.startup())   #startup tasks
 
     async def startup(self):
         await self.wait_until_ready()
         await sql.database_connect()
 
-        # lastdate is the last day when internships were purged from channels
-        # lastdate is set as the day before, to ensure internships are purged when bot comes online
-        global lastdate
-        lastdate = datetime.datetime.now().date() - datetime.timedelta(days=1)
         self.delete_internships_loop.start()
 
         owner = (await self.application_info()).owner
@@ -29,10 +30,9 @@ class Bot(commands.Bot):
 
     @tasks.loop(minutes=15)
     async def delete_internships_loop(self):
-        global lastdate
         today = datetime.datetime.now().date()
 
-        if today != lastdate:
+        if today != self.lastdate:
             internships = await sql.delete_internships(today)
             forms_list = [i[2] for i in internships]
             await google.close_forms(forms_list)
@@ -45,7 +45,7 @@ class Bot(commands.Bot):
                 for message_id in internships_dict[channel_id]:
                     message = await channel.fetch_message(message_id)
                     await message.delete()
-            lastdate = today
+            self.lastdate = today
 
     async def on_message(self, message: discord.Message):
         if message.author == self.user:
