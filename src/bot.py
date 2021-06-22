@@ -15,12 +15,13 @@ class Bot(commands.Bot):
         # lastdate is the last day when internships were purged from channels
         # lastdate is set as the day before, to ensure internships are purged when bot comes online
         self.lastdate = datetime.datetime.now().date() - datetime.timedelta(days=1)
+        self.db = None
 
         self.loop.create_task(self.startup())   #startup tasks
 
     async def startup(self):
         await self.wait_until_ready()
-        await sql.database_connect()
+        self.db = await sql.database_connect()
 
         self.delete_internships_loop.start()
 
@@ -33,7 +34,7 @@ class Bot(commands.Bot):
         today = datetime.datetime.now().date()
 
         if today != self.lastdate:
-            internships = await sql.delete_internships(today)
+            internships = await self.db.delete_internships(today)
             forms_list = [i[2] for i in internships]
             await google.close_forms(forms_list)
             internships_dict = dict()
@@ -58,7 +59,7 @@ class Bot(commands.Bot):
 
         # If message sender is Zapier or bot owner(for testing), consider it as internship
         if message.author.name == 'Zapier':
-            if message.channel.id == await sql.get_internship_channel(message.guild.id):
+            if message.channel.id == await self.db.get_internship_channel(message.guild.id):
                 await self.internship(message)
 
     async def internship(self, message):
@@ -70,7 +71,7 @@ class Bot(commands.Bot):
 
         form = await google.create_form(title, email)
         if len(form)==2:
-            await sql.add_internship(
+            await self.db.add_internship(
                 message.id, message.guild.id,
                 title, email, date,
                 form[0], form[1]

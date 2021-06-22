@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from utils import sql
 
 class Student(commands.Cog, name='Students'):
     def __init__(self, bot):
@@ -11,7 +10,7 @@ class Student(commands.Cog, name='Students'):
         """
         To enrol yourself to this guild
         """
-        await sql.set_student_guild(ctx.author.id, ctx.guild.id)
+        await self.bot.db.set_student_guild(ctx.author.id, ctx.guild.id)
 
     @commands.command()
     async def apply(self, ctx):
@@ -19,7 +18,7 @@ class Student(commands.Cog, name='Students'):
         To get internships from enrolled guild in DM
         """
         await ctx.message.add_reaction('🔁')
-        internships = await sql.get_internships(ctx.author.id)
+        internships = await self.bot.db.get_internships(ctx.author.id)
         embed = discord.Embed(title='Available internships')
         async for i in internships:
             embed.add_field(name=i[0], value=i[1], inline=False)
