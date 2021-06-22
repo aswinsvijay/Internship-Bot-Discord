@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from utils import sql
-from bot import internship
 
 class Moderator(commands.Cog, name='InternshipMod'):
     """
@@ -35,7 +34,7 @@ class Moderator(commands.Cog, name='InternshipMod'):
         reference = ctx.message.reference
         if reference:
             message = reference.cached_message or (await ctx.channel.fetch_message(reference.message_id))
-            await internship(message)
+            await self.bot.internship(message)
         else:
             await ctx.send("Use command as reply to the message to force add")
 
