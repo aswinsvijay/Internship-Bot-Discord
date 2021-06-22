@@ -21,9 +21,8 @@ async def database_connect():
             password = MYSQL_PASSWORD,
             db = MYSQL_DATABASE
         )
-        cursor = await botdata.cursor()
-    # If database not present
-    except aiomysql.DatabaseError:
+
+    except aiomysql.DatabaseError:          # If database not present
         botdata = await aiomysql.connect(
             host = MYSQL_HOST,
             user = MYSQL_USER,
