@@ -57,7 +57,8 @@ class Bot(commands.Bot):
             await self.process_commands(message)
             return
 
-        # If message sender is Zapier or bot owner(for testing), consider it as internship
+        # If message sender is Zapier and message is in the designated channel
+        # consider it as internship
         if message.author.name == 'Zapier':
             if message.channel.id == await self.db.get_internship_channel(message.guild.id):
                 await self.internship(message)
