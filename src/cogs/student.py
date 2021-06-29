@@ -13,6 +13,7 @@ class Student(commands.Cog, name='Students'):
         await self.bot.db.set_student_guild(ctx.author.id, ctx.guild.id)
 
     @commands.command()
+    @commands.cooldown(1, 15*60, commands.BucketType.user)
     async def apply(self, ctx):
         """
         To get internships from enrolled guild in DM
