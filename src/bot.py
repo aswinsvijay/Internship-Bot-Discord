@@ -44,7 +44,7 @@ class Bot(commands.Bot):
             for channel_id in internships_dict.keys():
                 channel = self.get_channel(channel_id)
                 for message_id in internships_dict[channel_id]:
-                    message = await channel.fetch_message(message_id)
+                    message = channel.get_partial_message(message_id)
                     await message.delete()
             self.lastdate = today
 
