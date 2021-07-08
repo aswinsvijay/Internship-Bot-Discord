@@ -8,8 +8,10 @@ class Moderator(commands.Cog, name='InternshipMod'):
     def __init__(self, bot):
         self.bot = bot
 
+    async def cog_check(self, ctx):
+        return await commands.has_role('InternshipMod').predicate(ctx)
+
     @commands.command()
-    @commands.has_role('InternshipMod')
     async def set_channel(self, ctx, channel: discord.TextChannel):
         """
         To set the channel where Zapier sends available internships
@@ -28,7 +30,6 @@ class Moderator(commands.Cog, name='InternshipMod'):
             await ctx.send_help(ctx.command)
 
     @commands.command()
-    @commands.has_role('InternshipMod')
     async def force_add(self, ctx):
         reference = ctx.message.reference
         if reference:
